@@ -4,7 +4,7 @@ const defaults = {
   links: true,
   formatting: true
 }
-// create links, bold, italic in html
+// create links, bold, italic in latex
 const toLatex = function(options) {
   options = Object.assign({}, defaults, options)
   let text = this.plaintext()

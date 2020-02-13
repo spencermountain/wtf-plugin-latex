@@ -3,17 +3,16 @@ import json from 'rollup-plugin-json'
 import { terser } from 'rollup-plugin-terser'
 import resolve from 'rollup-plugin-node-resolve'
 import babel from 'rollup-plugin-babel'
+import sizeCheck from 'rollup-plugin-filesize-check'
 const name = 'wtf-plugin-latex'
+console.log('\n 📦  - running rollup..\n')
 
+import { version } from './package.json'
+const banner = '/* ' + name + ' ' + version + ' MIT */'
 export default [
   {
     input: 'src/index.js',
-    output: [
-      {
-        file: `builds/${name}.mjs`,
-        format: 'esm'
-      }
-    ],
+    output: [{ banner: banner, file: `builds/${name}.mjs`, format: 'esm' }],
     plugins: [
       resolve(),
       json(),
@@ -21,13 +20,15 @@ export default [
       babel({
         babelrc: false,
         presets: ['@babel/preset-env']
-      })
+      }),
+      sizeCheck()
     ]
   },
   {
     input: 'src/index.js',
     output: [
       {
+        banner: banner,
         file: `builds/${name}.js`,
         format: 'umd',
         sourcemap: true,
@@ -41,18 +42,13 @@ export default [
       babel({
         babelrc: false,
         presets: ['@babel/preset-env']
-      })
+      }),
+      sizeCheck()
     ]
   },
   {
     input: 'src/index.js',
-    output: [
-      {
-        file: `builds/${name}.min.js`,
-        format: 'umd',
-        name: 'wtfLatex'
-      }
-    ],
+    output: [{ banner: banner, file: `builds/${name}.min.js`, format: 'umd', name: 'wtfLatex' }],
     plugins: [
       resolve(),
       json(),
@@ -61,7 +57,8 @@ export default [
         babelrc: false,
         presets: ['@babel/preset-env']
       }),
-      terser()
+      terser(),
+      sizeCheck()
     ]
   }
 ]
