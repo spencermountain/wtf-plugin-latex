@@ -1,5 +1,4 @@
 const smartReplace = require('./_lib/smartReplace')
-const setDefaults = require('./_lib/setDefaults')
 
 const defaults = {
   links: true,
@@ -7,7 +6,7 @@ const defaults = {
 }
 // create links, bold, italic in html
 const toLatex = function(options) {
-  options = setDefaults(options, defaults)
+  options = Object.assign({}, defaults, options)
   let text = this.plaintext()
   //turn links back into links
   if (options.links === true && this.links().length > 0) {

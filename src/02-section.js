@@ -1,4 +1,3 @@
-const setDefaults = require('../_lib/setDefaults')
 const defaults = {
   headers: true,
   images: true,
@@ -8,7 +7,7 @@ const defaults = {
 }
 //map '==' depth to 'subsection', 'subsubsection', etc
 const doSection = options => {
-  options = setDefaults(options, defaults)
+  options = Object.assign({}, defaults, options)
   let out = ''
   let num = 1
   //make the header

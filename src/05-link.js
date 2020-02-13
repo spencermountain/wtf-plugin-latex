@@ -1,6 +1,6 @@
 const helpers = require('./_lib/helpers')
 
-const toLatex = function(options) {
+const toLatex = function() {
   let href = ''
   if (this.site) {
     //use an external link

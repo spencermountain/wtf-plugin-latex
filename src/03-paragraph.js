@@ -1,11 +1,9 @@
-const setDefaults = require('../_lib/setDefaults')
-
 const defaults = {
   sentences: true
 }
 
 const toLatex = function(options) {
-  options = setDefaults(options, defaults)
+  options = Object.assign({}, defaults, options)
   let out = ''
   if (options.sentences === true) {
     out += '\n\n% BEGIN Paragraph\n'

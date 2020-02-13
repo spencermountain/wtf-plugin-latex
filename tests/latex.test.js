@@ -1,25 +1,31 @@
 'use strict'
 var test = require('tape')
-var wtf = require('./lib')
+var wtf = require('./_lib')
+var tidy = str => {
+  str = str.replace(/\s[\s]+/g, ' ')
+  str = str.replace(/\n/g, '')
+  str = str.replace(/ >/g, '>')
+  return str
+}
 
 test('basic-latex', t => {
   var have = wtf('that cat is [[a]] cool dude')
     .sentences(0)
     .latex()
   var want = 'that cat is \\href{./A}{a} cool dude'
-  t.equal(have, want, 'link')
+  t.equal(tidy(have), tidy(want), 'link')
 
   have = wtf('that cat is [[ab cd]] cool dude')
     .sentences(0)
     .latex()
   want = 'that cat is \\href{./Ab_cd}{ab cd} cool dude'
-  t.equal(have, want, 'link-blank')
+  t.equal(tidy(have), tidy(want), 'link-blank')
 
   have = wtf('that cat is [http://www.wikiversity.org ab cd] cool dude')
     .sentences(0)
     .latex()
   want = 'that cat is \\href{http://www.wikiversity.org}{ab cd} cool dude'
-  t.equal(have, want, 'link-external')
+  t.equal(tidy(have), tidy(want), 'link-external')
 
   //   // Image simple
   have = wtf(`My image [File:my_image.png]`)
@@ -27,7 +33,7 @@ test('basic-latex', t => {
     .latex()
   want =
     '\\begin{figure}\n\\includegraphics[width=\\linewidth]{https://wikipedia.org/wiki/Special:Redirect/file/My_image.png?width=300}\n\\caption{my image}\n\\end{figure}'
-  t.equal(have, want, 'image')
+  t.equal(tidy(have), tidy(want), 'image')
   t.end()
 })
 
@@ -37,35 +43,35 @@ test('latex-formatting', t => {
     .sentences(0)
     .latex()
   var want = `i 'think' so`
-  t.equal(have, want, 'one-tick')
+  t.equal(tidy(have), tidy(want), 'one-tick')
   //
   //   //2 ticks
   have = wtf(`i ''think'' so`)
     .sentences(0)
     .latex()
   want = 'i \\textit{think} so'
-  t.equal(have, want, 'italic')
+  t.equal(tidy(have), tidy(want), 'italic')
 
   //3 ticks
   have = wtf(`i '''think''' so`)
     .sentences(0)
     .latex()
   want = 'i \\textbf{think} so'
-  t.equal(have, want, 'bold')
+  t.equal(tidy(have), tidy(want), 'bold')
 
   //4 ticks
   have = wtf(`i ''''think'''' so`)
     .sentences(0)
     .latex()
   want = "i \\textbf{'think'} so"
-  t.equal(have, want, 'four-tick')
+  t.equal(tidy(have), tidy(want), 'four-tick')
 
   //5 ticks
   have = wtf(`i '''''think''''' so`)
     .sentences(0)
     .latex()
   want = 'i 	\\textbf{\\textit{think}} so'
-  t.equal(have, want, 'five-tick')
+  t.equal(tidy(have), tidy(want), 'five-tick')
   t.end()
 })
 

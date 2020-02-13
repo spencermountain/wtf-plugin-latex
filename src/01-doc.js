@@ -1,4 +1,3 @@
-const setDefaults = require('../_lib/setDefaults')
 const defaults = {
   infoboxes: true,
   sections: true
@@ -18,7 +17,7 @@ const softRedirect = function(doc) {
 
 //
 const toLatex = function(options) {
-  options = setDefaults(options, defaults)
+  options = Object.assign({}, defaults, options)
   let out = ''
   //if it's a redirect page, give it a 'soft landing':
   if (this.isRedirect() === true) {
